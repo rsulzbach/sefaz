@@ -4,6 +4,12 @@
  ********************************************/
 
 /*
+ *	configure
+ */
+_CONFIG_CONFIRM_CHANGE = 1
+
+
+/*
  *	globals
  */
 TITLE := "Alvarás Automatizados"
@@ -20,6 +26,12 @@ col_add := "M"
 /*
  *	autoexecute
  */
+
+if (_CONFIG_CONFIRM_CHANGE) {
+	confirm_cmd := "S"
+} else {
+	confirm_cmd := "N"
+}
 
 MsgBox, 0, Alvarás Automatizados, Sistema de Apropriação dos Alvarás Automatizados
 Sleep, %shortSleep%
@@ -219,7 +231,7 @@ While row <= lastrow
 		ControlSend, , {Tab}, ahk_pid %pwpid%
         Sleep, %shortSleep%
         
-		ControlSendRaw, , N, ahk_pid %pwpid%
+		ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
         Sleep, 1000
         
 		ControlSend, , {Enter}, ahk_pid %pwpid%
@@ -303,7 +315,7 @@ While row <= lastrow
 			ControlSend, , {Tab}, ahk_pid %pwpid%
             Sleep, %shortSleep%
             
-			ControlSendRaw, , N, ahk_pid %pwpid%
+			ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
             Sleep, 1000
             
 			ControlSend, , {Enter}, ahk_pid %pwpid%
