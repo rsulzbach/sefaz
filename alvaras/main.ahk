@@ -28,6 +28,7 @@ col_add := "M"
  *	autoexecute
  */
 
+
 if (_CONFIG_CONFIRM_CHANGE) {
 	confirm_cmd := "S"
 } else {
@@ -45,6 +46,7 @@ Sleep, %shortSleep%
 
 If !IsObject(xl)
 	xl := ComObjCreate("Excel.Application")
+
 xl.Workbooks.Open(pathxl)
 xl.Visible := True
 
@@ -60,9 +62,7 @@ processo := xl.Range("G2").Text
 
 MsgBox, 4, %TITLE%, O número do Processo Administrativo é %processo%
 IfMsgBox, No
-{
     Return
-}
 
 lastrow := xl.Range("A" xl.Rows.Count).End(xlUp := -4162).Row
 row := 4
@@ -201,34 +201,12 @@ While row <= lastrow {
         
 		ControlSend, , {F5}, ahk_pid %pwpid%
         Sleep, 5000
-        
-		Loop, 4 {
-            ControlSend, , {End}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-        }
-        
-        ControlSendRaw, , apropriacao do alvara n. %alv%`, expedido nos autos do processo  n. %pro%., ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {Tab}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSendRaw, , %processo%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {Tab}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
-        Sleep, 1000
-        
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
-        
-        Sleep, 2000
+       
+		gosub ConfirmationScreen
+           
+		; Now we update excel with date
+		xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
+		Sleep, 2000
     
 	} Else If (cod == 478 || cod == 490) {
         add := xl.Range(col_add . row).Text
@@ -275,32 +253,10 @@ While row <= lastrow {
             
 			ControlSend, , {F5}, ahk_pid %pwpid%
             Sleep, 5000
+
+			gosub ConfirmationScreen
             
-			Loop, 4 {
-                ControlSend, , {End}, ahk_pid %pwpid%
-                Sleep, %shortSleep%
-                ControlSend, , {Tab}, ahk_pid %pwpid%
-                Sleep, %shortSleep%
-            }
-            
-			ControlSendRaw, , apropriacao do alvara n. %alv%`, expedido nos autos do processo  n. %pro%., ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSendRaw, , %processo%, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
-            Sleep, 1000
-            
-			ControlSend, , {Enter}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
+			; Now we update excel with date
 			xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
             Sleep, 2000
 		}
@@ -341,3 +297,47 @@ WinClose, ahk_pid %pwpid%
 Sleep, 333
 
 MsgBox, 0, %TITLE%, Fim da Execução
+
+Exitapp
+
+/*
+ * Subrotines
+ */
+
+ConfirmationScreen:
+{
+	;msgbox, 0, , ConfirmationScreen Subrotine
+	
+	; First we clean every line
+	Loop, 4 {
+        ControlSend, , {End}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        ControlSend, , {Tab}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+    }
+    
+	; Fill in observation
+	ControlSendRaw, , apropriacao do alvara n. %alv%`, expedido nos autos do processo  n. %pro%., ahk_pid %pwpid%
+    Sleep, %shortSleep%
+    
+	; Go to Processo field
+	ControlSend, , {Tab}, ahk_pid %pwpid%
+    Sleep, %shortSleep%
+    
+	; Fill in with Processão number
+	ControlSendRaw, , %processo%, ahk_pid %pwpid%
+    Sleep, %shortSleep%
+    
+	; Go to confirmation field
+	ControlSend, , {Tab}, ahk_pid %pwpid%
+    Sleep, %shortSleep%
+    
+	; Fill in confirmation
+	ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
+    Sleep, 1000
+    
+	ControlSend, , {Enter}, ahk_pid %pwpid%
+    Sleep, %shortSleep%
+
+} return
+
