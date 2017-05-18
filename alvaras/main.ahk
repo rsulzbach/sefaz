@@ -1,5 +1,18 @@
-ÔªøMsgBox, 0, Alvar√°s Automatizados, Sistema de Apropria√ß√£o dos Alvar√°s Automatizados
-TITLE := "Alvar√°s Automatizados"
+/********************************************
+ *
+ *
+ ********************************************/
+
+/*
+ *	configure
+ */
+_CONFIG_CONFIRM_CHANGE = 0
+
+
+/*
+ *	globals
+ */
+TITLE := "Alvar·s Automatizados"
 shortSleep := 200
 row := 0
 col_val := "J"
@@ -9,49 +22,71 @@ col_ret := "K"
 col_cod := "L"
 col_pro := "C"
 col_add := "M"
-MsgBox, 0, %TITLE%, Em seguida`, selecione o arquivo com a planilha dos Alvar√°s Automatizados.
+
+/*
+ *	autoexecute
+ */
+
+if (_CONFIG_CONFIRM_CHANGE) {
+	confirm_cmd := "S"
+} else {
+	confirm_cmd := "N"
+}
+
+MsgBox, 0, Alvar·s Automatizados, Sistema de ApropriaÁ„o dos Alvar·s Automatizados
 Sleep, %shortSleep%
-FileSelectFile, pathxl, , , Selecione Arquivo com Alvar√°s Automatizados, *.xlsx
+
+MsgBox, 0, %TITLE%, Em seguida`, selecione o arquivo com a planilha dos Alvar·s Automatizados.
 Sleep, %shortSleep%
+
+FileSelectFile, pathxl, , , Selecione Arquivo com Alvar·s Automatizados, *.xlsx
+Sleep, %shortSleep%
+
 If !IsObject(xl)
 	xl := ComObjCreate("Excel.Application")
 xl.Workbooks.Open(pathxl)
 xl.Visible := True
-Sleep, %shortSleep%
+
 ControlSend, , {Enter}, ahk_pid %pwpid%
-MsgBox, 0, Alvar√°s Automatizados, 
+Sleep, %shortSleep%
+
+MsgBox, 0, Alvar·s Automatizados, 
 (LTrim
 Para garantir o correto funcionamento do script,
-Verifique e Confirme as seguintes informa√ß√µes.
+Verifique e Confirme as seguintes informaÁıes.
 )
 processo := xl.Range("G2").Text
-MsgBox, 4, %TITLE%, O n√∫mero do Processo Administrativo √© %processo%
+
+MsgBox, 4, %TITLE%, O n˙mero do Processo Administrativo È %processo%
 IfMsgBox, No
 {
     Return
 }
-lastrow := xl.Range("A" xl.Rows.Count).End(xlUp := -4162).Row
 
+lastrow := xl.Range("A" xl.Rows.Count).End(xlUp := -4162).Row
 row := 4
+
 MsgBox, 0, %TITLE%, 
 (LTrim
-Primeira Linha com Alvar√° = %row%
-√öltima Linha com Alvar√° = %lastrow%
+Primeira Linha com Alvar· = %row%
+⁄ltima Linha com Alvar· = %lastrow%
 )
+
 arr := xl.Range(col_arr . row).Text
 val := xl.Range(col_val . row).Text
 cod := xl.Range(col_cod . row).Text
 alv := SubStr(xl.Range(col_alv . row).Text, -10)
 pro := SubStr("000" . xl.Range(col_pro . row).Text, -13)
+
 MsgBox, 4, %TITLE%, 
 (LTrim
-Dados do Primeiro Alvar√°:
+Dados do Primeiro Alvar·:
 
-Arrecada√ß√£o Nro: %arr%
+ArrecadaÁ„o Nro: %arr%
 Valor: %val%
-C√≥digo: %cod%
+CÛdigo: %cod%
 
-Coment√°rio:
+Coment·rio:
 Apropriacao do Alvara n. %alv%, expedido nos autos do processo  n. %pro%.
 
 )
@@ -59,36 +94,48 @@ IfMsgBox, No
 {
     Return
 }
-InputBox, matr, Alvar√°s Automatizados, Digite sua matr√≠cula para login no SOE:
-InputBox, pwr, Alvar√°s Automatizados, Digite sua senha para login no SOE:, hide
+
+InputBox, matr, Alvar·s Automatizados, Digite sua matrÌcula para login no SOE:
+InputBox, pwr, Alvar·s Automatizados, Digite sua senha para login no SOE:, hide
 Sleep, %shortSleep%
+
 Run, C:\Program Files (x86)\pw3270\pw3270.exe, , , pwpid
 WinWait, ahk_pid %pwpid%
 Sleep, 333
 Sleep, 1000
+
 ControlSendRaw, , ims, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, 1000
+
 ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, 2000
+
 ControlSendRaw, , drpe, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Tab}, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSendRaw, , %matr%, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Tab}, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSendRaw, , %pwr%, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 MsgBox, 52, %TITLE%, 
 (LTrim
-- Verifique se o terminal est√° aberto e logado no SOE;
+- Verifique se o terminal est· aberto e logado no SOE;
 - Aproveite AGORA para reposicionar as janelas do terminal e planilha se desejado;
-- Enquanto o script estiver executando, N√ÉO se deve reposicionar nem interagir com o janela do terminal. Use no m√°ximo os bot√µes minimizar e restaurar.
+- Enquanto o script estiver executando, N√O se deve reposicionar nem interagir com o janela do terminal. Use no m·ximo os botıes minimizar e restaurar.
 
 Tudo Pronto?
 )
@@ -96,6 +143,7 @@ IfMsgBox, No
 {
     Return
 }
+
 Send, {LShift Down}
 Loop, 4
 {
@@ -103,18 +151,25 @@ Loop, 4
 }
 Send, {LShift Up}
 Sleep, %shortSleep%
+
 ControlSendRaw, , des, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSendRaw, , arr-alt-gui, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Tab}, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Tab}, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSendRaw, , sar, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, 2000
+
 While row <= lastrow
 {
     arr := xl.Range(col_arr . row).Text
@@ -123,49 +178,63 @@ While row <= lastrow
     alv := SubStr(xl.Range(col_alv . row).Text, -10)
     pro := SubStr("000" . xl.Range(col_pro . row).Text, -13)
     Sleep, %shortSleep%
-    If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 1064 || cod == 1065 || cod == 1066 || cod == 1067 || cod == 1083 || cod == 1161)
+    
+	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 1064 || cod == 1065 || cod == 1066 || cod == 1067 || cod == 1083 || cod == 1161)
     {
         ControlSendRaw, , %arr%, ahk_pid %pwpid%
         Sleep, %shortSleep%
-        ControlSend, , {Enter}, ahk_pid %pwpid%
+        
+		ControlSend, , {Enter}, ahk_pid %pwpid%
         Sleep, 5000
-        ControlSend, , {Enter}, ahk_pid %pwpid%
+        
+		ControlSend, , {Enter}, ahk_pid %pwpid%
         Sleep, %shortSleep%
-        /*
-        MsgBox, 0, , Vai para posi√ß√£o do c√≥digo
+        
+		/*
+        MsgBox, 0, , Vai para posiÁ„o do cÛdigo
         */
         Loop, 11
         {
             ControlSend, , {Tab}, ahk_pid %pwpid%
             Sleep, %shortSleep%
         }
-        ControlSend, , {End}, ahk_pid %pwpid%
+        
+		ControlSend, , {End}, ahk_pid %pwpid%
         Sleep, %shortSleep%
-        ControlSendRaw, , %cod%, ahk_pid %pwpid%
+        
+		ControlSendRaw, , %cod%, ahk_pid %pwpid%
         Sleep, %shortSleep%
-        ControlSend, , {F5}, ahk_pid %pwpid%
+        
+		ControlSend, , {F5}, ahk_pid %pwpid%
         Sleep, 5000
-        Loop, 4
+        
+		Loop, 4
         {
             ControlSend, , {End}, ahk_pid %pwpid%
             Sleep, %shortSleep%
             ControlSend, , {Tab}, ahk_pid %pwpid%
             Sleep, %shortSleep%
         }
-        /*
+        
+		/*
         ControlSendRaw, , %com%, ahk_pid %pwpid%
         */
         ControlSendRaw, , apropriacao do alvara n. %alv%`, expedido nos autos do processo  n. %pro%., ahk_pid %pwpid%
         Sleep, %shortSleep%
-        ControlSend, , {Tab}, ahk_pid %pwpid%
+        
+		ControlSend, , {Tab}, ahk_pid %pwpid%
         Sleep, %shortSleep%
-        ControlSendRaw, , %processo%, ahk_pid %pwpid%
+        
+		ControlSendRaw, , %processo%, ahk_pid %pwpid%
         Sleep, %shortSleep%
-        ControlSend, , {Tab}, ahk_pid %pwpid%
+        
+		ControlSend, , {Tab}, ahk_pid %pwpid%
         Sleep, %shortSleep%
-        ControlSendRaw, , N, ahk_pid %pwpid%
+        
+		ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
         Sleep, 1000
-        ControlSend, , {Enter}, ahk_pid %pwpid%
+        
+		ControlSend, , {Enter}, ahk_pid %pwpid%
         Sleep, %shortSleep%
         xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
         
@@ -175,30 +244,37 @@ While row <= lastrow
     {
         add := xl.Range(col_add . row).Text
         Sleep, %shortSleep%
-        If (!add)
+        
+		If (!add)
         {
             /*
             MsgBox, 0, , add vazio
             */
             xl.Range(col_ret . row).Value := "err: CPF/CNPJ"
             Sleep, %shortSleep%
-            xl.Range(row . ":" . row).Interior.ColorIndex := 6
+        
+			xl.Range(row . ":" . row).Interior.ColorIndex := 6
             Sleep, %shortSleep%
         }
         Else
         {
             ControlSendRaw, , %arr%, ahk_pid %pwpid%
             Sleep, %shortSleep%
-            ControlSend, , {Enter}, ahk_pid %pwpid%
+            
+			ControlSend, , {Enter}, ahk_pid %pwpid%
             Sleep, 5000
-            ControlSend, , {Enter}, ahk_pid %pwpid%
+            
+			ControlSend, , {Enter}, ahk_pid %pwpid%
             Sleep, %shortSleep%
-            ControlSend, , {End}, ahk_pid %pwpid%
+            
+			ControlSend, , {End}, ahk_pid %pwpid%
             Sleep, %shortSleep%
-            ControlSendRaw, , %add%, ahk_pid %pwpid%
+            
+			ControlSendRaw, , %add%, ahk_pid %pwpid%
             Sleep, %shortSleep%
-            /*
-            MsgBox, 0, , Vai para posi√ß√£o do c√≥digo
+            
+			/*
+            MsgBox, 0, , Vai para posiÁ„o do cÛdigo
             */
             Sleep, %shortSleep%
             Loop, 11
@@ -206,13 +282,17 @@ While row <= lastrow
                 ControlSend, , {Tab}, ahk_pid %pwpid%
                 Sleep, %shortSleep%
             }
-            ControlSend, , {End}, ahk_pid %pwpid%
+            
+			ControlSend, , {End}, ahk_pid %pwpid%
             Sleep, %shortSleep%
-            ControlSendRaw, , %cod%, ahk_pid %pwpid%
+            
+			ControlSendRaw, , %cod%, ahk_pid %pwpid%
             Sleep, %shortSleep%
-            ControlSend, , {F5}, ahk_pid %pwpid%
+            
+			ControlSend, , {F5}, ahk_pid %pwpid%
             Sleep, 5000
-            Loop, 4
+            
+			Loop, 4
             {
                 ControlSend, , {End}, ahk_pid %pwpid%
                 Sleep, %shortSleep%
@@ -222,51 +302,63 @@ While row <= lastrow
             /*
             ControlSendRaw, , %com%, ahk_pid %pwpid%
             */
-            ControlSendRaw, , apropriacao do alvara n. %alv%`, expedido nos autos do processo  n. %pro%., ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            ControlSendRaw, , %processo%, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            ControlSendRaw, , N, ahk_pid %pwpid%
-            Sleep, 1000
-            ControlSend, , {Enter}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
             
+			ControlSendRaw, , apropriacao do alvara n. %alv%`, expedido nos autos do processo  n. %pro%., ahk_pid %pwpid%
+            Sleep, %shortSleep%
+            
+			ControlSend, , {Tab}, ahk_pid %pwpid%
+            Sleep, %shortSleep%
+            
+			ControlSendRaw, , %processo%, ahk_pid %pwpid%
+            Sleep, %shortSleep%
+            
+			ControlSend, , {Tab}, ahk_pid %pwpid%
+            Sleep, %shortSleep%
+            
+			ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
+            Sleep, 1000
+            
+			ControlSend, , {Enter}, ahk_pid %pwpid%
+            Sleep, %shortSleep%
+            
+			xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
             Sleep, 2000
         }
     }
     Else If (cod == 761)
     {
-        xl.Range(col_ret . row).Value := "err: TODO(" . cod . ")"
-        
+        xl.Range(col_ret . row).Value := "err: TODO(" . cod . ")"     
         Sleep, %shortSleep%
-        xl.Range(row . ":" . row).Interior.ColorIndex := 6
+        
+		xl.Range(row . ":" . row).Interior.ColorIndex := 6
         Sleep, %shortSleep%
     }
     Else
     {
-        xl.Range(col_ret . row).Value := "err: INV√ÅLIDO(" . cod . ")"
-        
+        xl.Range(col_ret . row).Value := "err: INV¡LIDO(" . cod . ")"
         Sleep, %shortSleep%
-        xl.Range(row . ":" . row).Interior.ColorIndex := 3
+
+		xl.Range(row . ":" . row).Interior.ColorIndex := 3
         Sleep, %shortSleep%
     }
+	
     row += 1
     /*
-    MsgBox, 0, , Pr√≥xima linha a executar: %row%
+    MsgBox, 0, , PrÛxima linha a executar: %row%
     */
     Sleep, %shortSleep%
 }
-MsgBox, 0, %TITLE%, Encerrando sess√£o SOE.
+
+MsgBox, 0, %TITLE%, Encerrando sess„o SOE.
 Sleep, %shortSleep%
+
 ControlSend, , {F12}, ahk_pid %pwpid%
 Sleep, %shortSleep%
+
 ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, 2000
+
 WinClose, ahk_pid %pwpid%
 Sleep, 333
-MsgBox, 0, %TITLE%, Fim da Execu√ß√£o
+
+MsgBox, 0, %TITLE%, Fim da ExecuÁ„o
