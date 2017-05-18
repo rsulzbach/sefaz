@@ -167,16 +167,18 @@ ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, 2000
 
 While row <= lastrow {
-    arr := xl.Range(col_arr . row).Text
-    val := xl.Range(col_val . row).Text
-    cod := xl.Range(col_cod . row).Text
-    alv := SubStr(xl.Range(col_alv . row).Text, -10)
-    pro := SubStr("000" . xl.Range(col_pro . row).Text, -13)
+	arr := xl.Range(col_arr . row).Text
+	val := xl.Range(col_val . row).Text
+	cod := xl.Range(col_cod . row).Text
+	alv := SubStr(xl.Range(col_alv . row).Text, -10)
+	pro := SubStr("000" . xl.Range(col_pro . row).Text, -13)
+	add := xl.Range(col_add . row).Text
+
     Sleep, %shortSleep%
     
 	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 1064 
 			|| cod == 1065 || cod == 1066 || cod == 1067 || cod == 1083 || cod == 1161) {
-        
+
 		ControlSendRaw, , %arr%, ahk_pid %pwpid%
         Sleep, %shortSleep%
         
@@ -209,57 +211,53 @@ While row <= lastrow {
 		Sleep, 2000
     
 	} Else If (cod == 478 || cod == 490) {
-        add := xl.Range(col_add . row).Text
-        Sleep, %shortSleep%
-        
 		; add vazio
 		If (!add) {
-            
 			xl.Range(col_ret . row).Value := "err: CPF/CNPJ"
             Sleep, %shortSleep%
         
 			xl.Range(row . ":" . row).Interior.ColorIndex := 6
             Sleep, %shortSleep%
-        
-		} Else {
-        
-			ControlSendRaw, , %arr%, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSend, , {Enter}, ahk_pid %pwpid%
-            Sleep, 5000
-            
-			ControlSend, , {Enter}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSend, , {End}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSendRaw, , %add%, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-            ; MsgBox, 0, , Vai para posição do código
-            Sleep, %shortSleep%
-            Loop, 11 {
-                ControlSend, , {Tab}, ahk_pid %pwpid%
-                Sleep, %shortSleep%
-            }
-            
-			ControlSend, , {End}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSendRaw, , %cod%, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-            
-			ControlSend, , {F5}, ahk_pid %pwpid%
-            Sleep, 5000
 
-			gosub ConfirmationScreen
-            
-			; Now we update excel with date
-			xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
-            Sleep, 2000
+			gosub NextRow
 		}
+        
+		ControlSendRaw, , %arr%, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSend, , {Enter}, ahk_pid %pwpid%
+        Sleep, 5000
+        
+		ControlSend, , {Enter}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSend, , {End}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSendRaw, , %add%, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+        ; MsgBox, 0, , Vai para posição do código
+        Sleep, %shortSleep%
+        Loop, 11 {
+            ControlSend, , {Tab}, ahk_pid %pwpid%
+            Sleep, %shortSleep%
+        }
+        
+		ControlSend, , {End}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSendRaw, , %cod%, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSend, , {F5}, ahk_pid %pwpid%
+        Sleep, 5000
+
+		gosub ConfirmationScreen
+        
+		; Now we update excel with date
+		xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
+            Sleep, 2000
 	
 	} Else If (cod == 761) {
 
@@ -278,7 +276,8 @@ While row <= lastrow {
         Sleep, %shortSleep%
 
     }
-	
+
+NextRow:	 
     row += 1
     ; MsgBox, 0, , Próxima linha a executar: %row%
     Sleep, %shortSleep%
