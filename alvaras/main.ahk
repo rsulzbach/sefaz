@@ -6,13 +6,13 @@
 /*
  *	configure
  */
-_CONFIG_CONFIRM_CHANGE = 1
+_CONFIG_CONFIRM_CHANGE = 0
 
 
 /*
  *	globals
  */
-TITLE := "Alvar√°s Automatizados"
+TITLE := "Alvar·s Automatizados"
 shortSleep := 200
 row := 0
 col_val := "J"
@@ -33,13 +33,13 @@ if (_CONFIG_CONFIRM_CHANGE) {
 	confirm_cmd := "N"
 }
 
-MsgBox, 0, Alvar√°s Automatizados, Sistema de Apropria√ß√£o dos Alvar√°s Automatizados
+MsgBox, 0, Alvar·s Automatizados, Sistema de ApropriaÁ„o dos Alvar·s Automatizados
 Sleep, %shortSleep%
 
-MsgBox, 0, %TITLE%, Em seguida`, selecione o arquivo com a planilha dos Alvar√°s Automatizados.
+MsgBox, 0, %TITLE%, Em seguida`, selecione o arquivo com a planilha dos Alvar·s Automatizados.
 Sleep, %shortSleep%
 
-FileSelectFile, pathxl, , , Selecione Arquivo com Alvar√°s Automatizados, *.xlsx
+FileSelectFile, pathxl, , , Selecione Arquivo com Alvar·s Automatizados, *.xlsx
 Sleep, %shortSleep%
 
 If !IsObject(xl)
@@ -50,14 +50,14 @@ xl.Visible := True
 ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, %shortSleep%
 
-MsgBox, 0, Alvar√°s Automatizados, 
+MsgBox, 0, Alvar·s Automatizados, 
 (LTrim
 Para garantir o correto funcionamento do script,
-Verifique e Confirme as seguintes informa√ß√µes.
+Verifique e Confirme as seguintes informaÁıes.
 )
 processo := xl.Range("G2").Text
 
-MsgBox, 4, %TITLE%, O n√∫mero do Processo Administrativo √© %processo%
+MsgBox, 4, %TITLE%, O n˙mero do Processo Administrativo È %processo%
 IfMsgBox, No
 {
     Return
@@ -68,8 +68,8 @@ row := 4
 
 MsgBox, 0, %TITLE%, 
 (LTrim
-Primeira Linha com Alvar√° = %row%
-√öltima Linha com Alvar√° = %lastrow%
+Primeira Linha com Alvar· = %row%
+⁄ltima Linha com Alvar· = %lastrow%
 )
 
 arr := xl.Range(col_arr . row).Text
@@ -80,13 +80,13 @@ pro := SubStr("000" . xl.Range(col_pro . row).Text, -13)
 
 MsgBox, 4, %TITLE%, 
 (LTrim
-Dados do Primeiro Alvar√°:
+Dados do Primeiro Alvar·:
 
-Arrecada√ß√£o Nro: %arr%
+ArrecadaÁ„o Nro: %arr%
 Valor: %val%
-C√≥digo: %cod%
+CÛdigo: %cod%
 
-Coment√°rio:
+Coment·rio:
 Apropriacao do Alvara n. %alv%, expedido nos autos do processo  n. %pro%.
 
 )
@@ -95,8 +95,8 @@ IfMsgBox, No
     Return
 }
 
-InputBox, matr, Alvar√°s Automatizados, Digite sua matr√≠cula para login no SOE:
-InputBox, pwr, Alvar√°s Automatizados, Digite sua senha para login no SOE:, hide
+InputBox, matr, Alvar·s Automatizados, Digite sua matrÌcula para login no SOE:
+InputBox, pwr, Alvar·s Automatizados, Digite sua senha para login no SOE:, hide
 Sleep, %shortSleep%
 
 Run, C:\Program Files (x86)\pw3270\pw3270.exe, , , pwpid
@@ -133,9 +133,9 @@ Sleep, %shortSleep%
 
 MsgBox, 52, %TITLE%, 
 (LTrim
-- Verifique se o terminal est√° aberto e logado no SOE;
+- Verifique se o terminal est· aberto e logado no SOE;
 - Aproveite AGORA para reposicionar as janelas do terminal e planilha se desejado;
-- Enquanto o script estiver executando, N√ÉO se deve reposicionar nem interagir com o janela do terminal. Use no m√°ximo os bot√µes minimizar e restaurar.
+- Enquanto o script estiver executando, N√O se deve reposicionar nem interagir com o janela do terminal. Use no m·ximo os botıes minimizar e restaurar.
 
 Tudo Pronto?
 )
@@ -191,7 +191,7 @@ While row <= lastrow
         Sleep, %shortSleep%
         
 		/*
-        MsgBox, 0, , Vai para posi√ß√£o do c√≥digo
+        MsgBox, 0, , Vai para posiÁ„o do cÛdigo
         */
         Loop, 11
         {
@@ -274,7 +274,7 @@ While row <= lastrow
             Sleep, %shortSleep%
             
 			/*
-            MsgBox, 0, , Vai para posi√ß√£o do c√≥digo
+            MsgBox, 0, , Vai para posiÁ„o do cÛdigo
             */
             Sleep, %shortSleep%
             Loop, 11
@@ -335,7 +335,7 @@ While row <= lastrow
     }
     Else
     {
-        xl.Range(col_ret . row).Value := "err: INV√ÅLIDO(" . cod . ")"
+        xl.Range(col_ret . row).Value := "err: INV¡LIDO(" . cod . ")"
         Sleep, %shortSleep%
 
 		xl.Range(row . ":" . row).Interior.ColorIndex := 3
@@ -344,12 +344,12 @@ While row <= lastrow
 	
     row += 1
     /*
-    MsgBox, 0, , Pr√≥xima linha a executar: %row%
+    MsgBox, 0, , PrÛxima linha a executar: %row%
     */
     Sleep, %shortSleep%
 }
 
-MsgBox, 0, %TITLE%, Encerrando sess√£o SOE.
+MsgBox, 0, %TITLE%, Encerrando sess„o SOE.
 Sleep, %shortSleep%
 
 ControlSend, , {F12}, ahk_pid %pwpid%
@@ -361,4 +361,4 @@ Sleep, 2000
 WinClose, ahk_pid %pwpid%
 Sleep, 333
 
-MsgBox, 0, %TITLE%, Fim da Execu√ß√£o
+MsgBox, 0, %TITLE%, Fim da ExecuÁ„o
