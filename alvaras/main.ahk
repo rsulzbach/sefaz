@@ -12,10 +12,11 @@ _CONFIG_CONFIRM_CHANGE = 0
 /*
  *	globals
  */
-VERS = 1.002
+VERS = 1.004
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
+_COL_CGCTE := "A"
 col_val := "J"
 col_arr := "E"
 col_alv := "G"
@@ -167,6 +168,8 @@ ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, 2000
 
 While row <= lastrow {
+
+	mun := SubStr(xl.Range(_COL_CGCTE . row).Text, 1, 3)
 	arr := xl.Range(col_arr . row).Text
 	val := xl.Range(col_val . row).Text
 	cod := xl.Range(col_cod . row).Text
@@ -175,7 +178,19 @@ While row <= lastrow {
 	add := xl.Range(col_add . row).Text
 
     Sleep, %shortSleep%
-    
+
+	if !(mun == 096 || mun == 900) {
+		;MsgBox, 0, , Mun(%mun%) diferente de 096 ou 900.
+
+		; Flags invalid mun
+		xl.Range(col_ret . row).Value := "IE: " . mun . "/xxxxxxx"
+		; Paints row in yellow
+		xl.Range(row . ":" . row).Interior.ColorIndex := 6
+        Sleep, %shortSleep%
+
+		goto NextRow
+	}
+
 	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 1064 
 			|| cod == 1065 || cod == 1066 || cod == 1067 || cod == 1083 || cod == 1161) {
 
@@ -219,7 +234,7 @@ While row <= lastrow {
 			xl.Range(row . ":" . row).Interior.ColorIndex := 6
             Sleep, %shortSleep%
 
-			gosub NextRow
+			goto NextRow
 		}
         
 		ControlSendRaw, , %arr%, ahk_pid %pwpid%
