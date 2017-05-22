@@ -1,7 +1,14 @@
-/********************************************
+/*
  *
  *
- ********************************************/
+ */
+
+/*
+ *	include
+ */
+;MsgBox, 0, , dir = %A_ScriptDir%
+#include alvara_defines.ahk
+
 
 /*
  *	configure
@@ -12,24 +19,15 @@ _CONFIG_CONFIRM_CHANGE = 0
 /*
  *	globals
  */
-VERS = 1.004
+VERS := 1.010
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
-_COL_CGCTE := "A"
-col_val := "J"
-col_arr := "E"
-col_alv := "G"
-col_ret := "K"
-col_cod := "L"
-col_pro := "C"
-col_add := "M"
+
 
 /*
  *	autoexecute
  */
-
-
 if (_CONFIG_CONFIRM_CHANGE) {
 	confirm_cmd := "S"
 } else {
@@ -50,11 +48,9 @@ If !IsObject(xl)
 
 xl.Workbooks.Open(pathxl)
 xl.Visible := True
-
-ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, %shortSleep%
 
-MsgBox, 0, Alvarás Automatizados, 
+MsgBox, 0, %TITLE%, 
 (LTrim
 Para garantir o correto funcionamento do script,
 Verifique e Confirme as seguintes informações.
@@ -66,19 +62,23 @@ IfMsgBox, No
     Return
 
 lastrow := xl.Range("A" xl.Rows.Count).End(xlUp := -4162).Row
-row := 4
+firstrow := xl.Range("A" lastrow).End(xlUp := -4162).Row + 1
 
-MsgBox, 0, %TITLE%, 
+MsgBox, 4, %TITLE%, 
 (LTrim
-Primeira Linha com Alvará = %row%
+Primeira Linha com Alvará = %firstrow%
 Última Linha com Alvará = %lastrow%
 )
+IfMsgBox, No
+    Return
 
-arr := xl.Range(col_arr . row).Text
-val := xl.Range(col_val . row).Text
-cod := xl.Range(col_cod . row).Text
-alv := SubStr(xl.Range(col_alv . row).Text, -10)
-pro := SubStr("000" . xl.Range(col_pro . row).Text, -13)
+row := firstrow
+
+arr := xl.Range(_COL_ARR . row).Text
+val := xl.Range(_COL_VAL . row).Text
+cod := xl.Range(_COL_COD . row).Text
+alv := SubStr(xl.Range(_COL_ALV . row).Text, -10)
+pro := SubStr("000" . xl.Range(_COL_PROC . row).Text, -13)
 
 MsgBox, 4, %TITLE%, 
 (LTrim
@@ -170,12 +170,12 @@ Sleep, 2000
 While row <= lastrow {
 
 	mun := SubStr(xl.Range(_COL_CGCTE . row).Text, 1, 3)
-	arr := xl.Range(col_arr . row).Text
-	val := xl.Range(col_val . row).Text
-	cod := xl.Range(col_cod . row).Text
-	alv := SubStr(xl.Range(col_alv . row).Text, -10)
-	pro := SubStr("000" . xl.Range(col_pro . row).Text, -13)
-	add := xl.Range(col_add . row).Text
+	arr := xl.Range(_COL_ARR . row).Text
+	val := xl.Range(_COL_VAL . row).Text
+	cod := xl.Range(_COL_COD . row).Text
+	alv := SubStr(xl.Range(_COL_ALV . row).Text, -10)
+	pro := SubStr("000" . xl.Range(_COL_PROC . row).Text, -13)
+	add := xl.Range(_COL_ADD . row).Text
 
     Sleep, %shortSleep%
 
@@ -183,7 +183,7 @@ While row <= lastrow {
 		;MsgBox, 0, , Mun(%mun%) diferente de 096 ou 900.
 
 		; Flags invalid mun
-		xl.Range(col_ret . row).Value := "IE: " . mun . "/xxxxxxx"
+		xl.Range(_COL_RETURN . row).Value := "IE: " . mun . "/xxxxxxx"
 		; Paints row in yellow
 		xl.Range(row . ":" . row).Interior.ColorIndex := 6
         Sleep, %shortSleep%
@@ -191,8 +191,9 @@ While row <= lastrow {
 		goto NextRow
 	}
 
-	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 1064 
-			|| cod == 1065 || cod == 1066 || cod == 1067 || cod == 1083 || cod == 1161) {
+	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760
+			|| cod == 1064 || cod == 1065 || cod == 1066 || cod == 1067
+			|| cod == 1083 || cod == 1161) {
 
 		ControlSendRaw, , %arr%, ahk_pid %pwpid%
         Sleep, %shortSleep%
@@ -222,13 +223,13 @@ While row <= lastrow {
 		gosub ConfirmationScreen
            
 		; Now we update excel with date
-		xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
+		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
 		Sleep, 2000
     
 	} Else If (cod == 478 || cod == 490) {
 		; add vazio
 		If (!add) {
-			xl.Range(col_ret . row).Value := "err: CPF/CNPJ"
+			xl.Range(_COL_RETURN . row).Value := "err: CPF/CNPJ"
             Sleep, %shortSleep%
         
 			xl.Range(row . ":" . row).Interior.ColorIndex := 6
@@ -271,12 +272,12 @@ While row <= lastrow {
 		gosub ConfirmationScreen
         
 		; Now we update excel with date
-		xl.Range(col_ret . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
+		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
             Sleep, 2000
 	
 	} Else If (cod == 761) {
 
-        xl.Range(col_ret . row).Value := "err: TODO(" . cod . ")"     
+        xl.Range(_COL_RETURN . row).Value := "err: TODO(" . cod . ")"     
         Sleep, %shortSleep%
         
 		xl.Range(row . ":" . row).Interior.ColorIndex := 6
@@ -284,7 +285,7 @@ While row <= lastrow {
 
     } Else {
 
-        xl.Range(col_ret . row).Value := "err: INVÁLIDO(" . cod . ")"
+        xl.Range(_COL_RETURN . row).Value := "err: INVÁLIDO(" . cod . ")"
         Sleep, %shortSleep%
 
 		xl.Range(row . ":" . row).Interior.ColorIndex := 3
@@ -315,7 +316,7 @@ MsgBox, 0, %TITLE%, Fim da Execução
 Exitapp
 
 /*
- * Subrotines
+ *	Subrotines
  */
 
 ConfirmationScreen:
