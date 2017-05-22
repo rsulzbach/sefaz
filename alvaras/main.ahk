@@ -19,7 +19,7 @@ _CONFIG_CONFIRM_CHANGE = 0
 /*
  *	globals
  */
-VERS := 1.009
+VERS := 1.010
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
@@ -48,11 +48,9 @@ If !IsObject(xl)
 
 xl.Workbooks.Open(pathxl)
 xl.Visible := True
-
-ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, %shortSleep%
 
-MsgBox, 0, Alvarás Automatizados, 
+MsgBox, 0, %TITLE%, 
 (LTrim
 Para garantir o correto funcionamento do script,
 Verifique e Confirme as seguintes informações.
@@ -193,8 +191,9 @@ While row <= lastrow {
 		goto NextRow
 	}
 
-	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 1064 
-			|| cod == 1065 || cod == 1066 || cod == 1067 || cod == 1083 || cod == 1161) {
+	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760
+			|| cod == 1064 || cod == 1065 || cod == 1066 || cod == 1067
+			|| cod == 1083 || cod == 1161) {
 
 		ControlSendRaw, , %arr%, ahk_pid %pwpid%
         Sleep, %shortSleep%
@@ -317,7 +316,7 @@ MsgBox, 0, %TITLE%, Fim da Execução
 Exitapp
 
 /*
- * Subrotines
+ *	Subrotines
  */
 
 ConfirmationScreen:
