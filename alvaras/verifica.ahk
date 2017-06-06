@@ -179,9 +179,9 @@ While row <= lastrow
         
 		Sleep, %shortSleep%
         
-		If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760
-				|| cod == 1064 || cod == 1065 || cod == 1066 || cod == 1067
-				|| cod == 1083 || cod == 1161
+		If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 978
+				|| cod == 1008 || cod == 1064 || cod == 1065 || cod == 1066 || cod == 1067
+				|| cod == 1083 || cod == 1161 || cod == 1162
 				|| cod == 478 || cod == 490
 				|| cod == 761) {
             
