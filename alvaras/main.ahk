@@ -13,13 +13,12 @@
 /*
  *	configure
  */
-_CONFIG_CONFIRM_CHANGE = 0
 
-
+ 
 /*
  *	globals
  */
-VERS := 1.010
+VERS := 1.013
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
@@ -28,14 +27,21 @@ row := 0
 /*
  *	autoexecute
  */
-if (_CONFIG_CONFIRM_CHANGE) {
-	confirm_cmd := "S"
-} else {
-	confirm_cmd := "N"
-}
+MsgBox, 0, %TITLE%, Em seguida`, selecione as configurações de execução...
+confirm_cmd := "N"
+cfg_onlyPoa := 1
 
-MsgBox, 0, %TITLE%, Sistema de Apropriação dos Alvarás Automatizados
-Sleep, %shortSleep%
+MsgBox, 4, %TITLE%, Confirmar as Correções?
+IfMsgBox, Yes
+    confirm_cmd := "S"
+IfMsgBox, No
+    confirm_cmd := "N"
+	
+MsgBox, 4, %TITLE%, Corrigir apenas Poa (096 e 900)?
+IfMsgBox, Yes
+	cfg_onlyPoa := 1
+IfMsgBox, No
+	cfg_onlyPoa := 0
 
 MsgBox, 0, %TITLE%, Em seguida`, selecione o arquivo com a planilha dos Alvarás Automatizados.
 Sleep, %shortSleep%
@@ -179,7 +185,7 @@ While row <= lastrow {
 
     Sleep, %shortSleep%
 
-	if !(mun == 096 || mun == 900) {
+	if cfg_onlyPoa && !(mun == 096 || mun == 900) {
 		;MsgBox, 0, , Mun(%mun%) diferente de 096 ou 900.
 
 		; Flags invalid mun
