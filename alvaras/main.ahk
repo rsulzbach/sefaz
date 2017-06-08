@@ -27,6 +27,37 @@ row := 0
 /*
  *	autoexecute
  */
+ 
+Gui, Add, Checkbox, Checked vCfg_onlyPoa, Corrigir apenas Poa (096 e 900)
+
+Gui, Add, Checkbox, Checked vCfg_confirm, Efetivar correções
+
+Gui, Add, Button, gExecute, Executar
+
+Gui, Add, Button, gGuiClose, Fechar
+
+Gui, Show,, %TITLE% . Config
+
+Return
+
+
+Execute:
+
+Gui, Submit, NoHide ;this command submits the guis' datas' state
+
+If Cfg_onlyPoa = 1
+    MsgBox, you checked the first box
+
+If Cfg_onlyPoa = 0
+    MsgBox, you didnt check the first box
+
+If Cfg_confirm = 1
+    MsgBox, you checked the second box
+
+If Cfg_confirm = 0
+    MsgBox, you didnt check the second box
+ 
+
 MsgBox, 0, %TITLE%, Em seguida`, selecione as configurações de execução...
 confirm_cmd := "N"
 cfg_onlyPoa := 1
@@ -185,7 +216,7 @@ While row <= lastrow {
 
     Sleep, %shortSleep%
 
-	if cfg_onlyPoa && !(mun == 096 || mun == 900) {
+	if Cfg_onlyPoa && !(mun == 096 || mun == 900) {
 		;MsgBox, 0, , Mun(%mun%) diferente de 096 ou 900.
 
 		; Flags invalid mun
@@ -320,6 +351,7 @@ Sleep, 333
 MsgBox, 0, %TITLE%, Fim da Execução
 
 Exitapp
+return
 
 /*
  *	Subrotines
@@ -361,4 +393,7 @@ ConfirmationScreen:
     Sleep, %shortSleep%
 
 } return
+
+GuiClose: 
+ExitApp
 
