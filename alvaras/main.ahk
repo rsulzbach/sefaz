@@ -212,7 +212,7 @@ While row <= lastrow {
 	}
 
 	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 978
-			|| cod == 1008 || cod == 1064 || cod == 1065 || cod == 1066 || cod == 1067
+			|| cod == 1008 || cod == 1065 || cod == 1066 || cod == 1067
 			|| cod == 1083 || cod == 1161 || cod == 1162) {
 
 		ControlSendRaw, , %arr%, ahk_pid %pwpid%
@@ -246,7 +246,7 @@ While row <= lastrow {
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
 		Sleep, 2000
     
-	} Else If (cod == 478 || cod == 490) {
+	} Else If (cod == 478 || cod == 490 || cod == 1064) {
 		; add vazio
 		If (!add) {
 			xl.Range(_COL_RETURN . row).Value := "err: CPF/CNPJ"
