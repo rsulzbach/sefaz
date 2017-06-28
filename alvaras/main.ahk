@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.013
+VERS := 1.100
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
@@ -27,22 +27,36 @@ row := 0
 /*
  *	autoexecute
  */
-MsgBox, 0, %TITLE%, Em seguida`, selecione as configurações de execução...
-confirm_cmd := "N"
-cfg_onlyPoa := 1
+ 
+Gui, Add, Checkbox, Checked vcfg_onlyPoa, Corrigir apenas Poa (096 e 900)
 
-MsgBox, 4, %TITLE%, Confirmar as Correções?
-IfMsgBox, Yes
+Gui, Add, Checkbox, Checked vcfg_confirm, Efetivar correções
+
+Gui, Add, Button, gExecute vbtnExecute, Executar
+
+Gui, Add, Button, gGuiClose vbtnClose, Fechar
+
+Gui, Show,, %TITLE% . Config
+
+Return
+
+
+Execute:
+
+;StartTicks := A_TickCount 
+
+; Disable Controls
+GuiControl, disable, cfg_onlyPoa
+GuiControl, disable, cfg_confirm
+GuiControl, disable, btnExecute
+Gui, Submit, NoHide ;this command submits the guis' datas' state
+
+If (cfg_confirm == 1) {
     confirm_cmd := "S"
-IfMsgBox, No
+} Else {
     confirm_cmd := "N"
+}
 	
-MsgBox, 4, %TITLE%, Corrigir apenas Poa (096 e 900)?
-IfMsgBox, Yes
-	cfg_onlyPoa := 1
-IfMsgBox, No
-	cfg_onlyPoa := 0
-
 MsgBox, 0, %TITLE%, Em seguida`, selecione o arquivo com a planilha dos Alvarás Automatizados.
 Sleep, %shortSleep%
 
@@ -317,9 +331,19 @@ Sleep, 2000
 WinClose, ahk_pid %pwpid%
 Sleep, 333
 
+/*
+ElapsedTicks = A_TickCount - StartTicks
+ElapsedTime = 20000101000000
+ElapsedTime += ElapsedTicks/1000, Seconds
+
+FormatTime fElapsedTime, %ElapsedTime%, HH:mm:ss
+
+MsgBox, 0, %TITLE%, %fElapsedTime%
+*/
 MsgBox, 0, %TITLE%, Fim da Execução
 
 Exitapp
+return
 
 /*
  *	Subrotines
@@ -361,4 +385,7 @@ ConfirmationScreen:
     Sleep, %shortSleep%
 
 } return
+
+GuiClose: 
+ExitApp
 
