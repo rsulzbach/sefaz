@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.100
+VERS := 1.101
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
@@ -162,29 +162,7 @@ Tudo Pronto?
 IfMsgBox, No
     Return
 
-Send, {LShift Down}
-Loop, 4 {
-    ControlSend, , {Tab 4}, ahk_pid %pwpid%
-}
-Send, {LShift Up}
-Sleep, %shortSleep%
-
-ControlSendRaw, , des, ahk_pid %pwpid%
-Sleep, %shortSleep%
-
-ControlSendRaw, , arr-alt-gui, ahk_pid %pwpid%
-Sleep, %shortSleep%
-
-ControlSend, , {Tab}, ahk_pid %pwpid%
-Sleep, %shortSleep%
-
-ControlSend, , {Tab}, ahk_pid %pwpid%
-Sleep, %shortSleep%
-
-ControlSendRaw, , sar, ahk_pid %pwpid%
-Sleep, %shortSleep%
-
-ControlSend, , {Enter}, ahk_pid %pwpid%
+desviar("arr-alt-gui")
 Sleep, 2000
 
 While row <= lastrow {
@@ -244,6 +222,11 @@ While row <= lastrow {
            
 		; Now we update excel with date
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
+        Sleep, %shortSleep%
+
+		xl.Range(row . ":" . row).Interior.ColorIndex := 2
+        Sleep, %shortSleep%
+
 		Sleep, 2000
     
 	} Else If (cod == 478 || cod == 490 || cod == 1064) {
@@ -293,15 +276,82 @@ While row <= lastrow {
         
 		; Now we update excel with date
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
-            Sleep, 2000
-	
-	} Else If (cod == 761) {
+        Sleep, %shortSleep%
 
-        xl.Range(_COL_RETURN . row).Value := "err: TODO(" . cod . ")"     
+		xl.Range(row . ":" . row).Interior.ColorIndex := 2
+        Sleep, %shortSleep%
+
+		Sleep, 2000
+
+	} Else If (cod == 761) {
+		; add vazio
+		If (!add) {
+			xl.Range(_COL_RETURN . row).Value := "err: DAT"
+            Sleep, %shortSleep%
+        
+			xl.Range(row . ":" . row).Interior.ColorIndex := 6
+            Sleep, %shortSleep%
+
+			goto NextRow
+		}
+ 
+		desviar("arr-alt-alv")
+        Sleep, 2000
+
+		ControlSendRaw, , %arr%, ahk_pid %pwpid%
         Sleep, %shortSleep%
         
-		xl.Range(row . ":" . row).Interior.ColorIndex := 6
+		ControlSend, , {Enter}, ahk_pid %pwpid%
+        Sleep, 2000
+
+		ControlSendRaw, , x, ahk_pid %pwpid%
+		Sleep, %shortSleep%
+
+		ControlSend, , {Enter}, ahk_pid %pwpid%
+        Sleep, 5000
+
+		ControlSend, , {Enter}, ahk_pid %pwpid%
         Sleep, %shortSleep%
+        
+	    ; MsgBox, 0, , Vai para posição da Referencia
+		ControlSend, , {Tab}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+		
+		ControlSend, , {End}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSendRaw, , %add%, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+        ; MsgBox, 0, , Vai para posição do código
+        Sleep, %shortSleep%
+        Loop, 10 {
+            ControlSend, , {Tab}, ahk_pid %pwpid%
+            Sleep, %shortSleep%
+        }
+        
+		ControlSend, , {End}, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSendRaw, , %cod%, ahk_pid %pwpid%
+        Sleep, %shortSleep%
+        
+		ControlSend, , {F5}, ahk_pid %pwpid%
+        Sleep, 5000
+
+		gosub ConfirmationScreen
+        
+		; Now we update excel with date
+		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
+        Sleep, %shortSleep%
+	
+		xl.Range(row . ":" . row).Interior.ColorIndex := 2
+        Sleep, %shortSleep%
+
+		Sleep, 2000
+		; Go back to default transaction
+		desviar("arr-alt-gui")
+        Sleep, 2000
 
     } Else {
 
@@ -388,4 +438,50 @@ ConfirmationScreen:
 
 GuiClose: 
 ExitApp
+
+/*
+ *	Functions
+ */
+
+/*
+ *	void	desviar(string transaction)
+ *	DESCRIPTION :
+ *		
+ *	INPUTS :
+ *		string transaction: transaction name 
+ *
+ *	OUTPUTS :
+ *		void
+ */
+desviar(transaction)
+{
+	global
+	
+	Send, {LShift Down}
+	Loop, 4 {
+	    ControlSend, , {Tab 4}, ahk_pid %pwpid%
+	}
+	Send, {LShift Up}
+	Sleep, %shortSleep%
+	
+	ControlSendRaw, , des, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSendRaw, , %transaction%, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSend, , {Tab}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSend, , {Tab}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSendRaw, , sar, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSend, , {Enter}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+
+	return
+}
 
