@@ -20,6 +20,8 @@ _COL_ADD := "M"
 a_COD_GERAL := []
 a_COD_GERAL.Push(304)
 a_COD_GERAL.Push(386)
+a_COD_GERAL.Push(451)
+a_COD_GERAL.Push(547)
 a_COD_GERAL.Push(640)
 a_COD_GERAL.Push(681)
 a_COD_GERAL.Push(760)
