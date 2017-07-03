@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.101
+VERS := 1.102
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
@@ -189,9 +189,10 @@ While row <= lastrow {
 		goto NextRow
 	}
 
-	If (cod == 304 || cod == 386 || cod == 640 || cod == 681 || cod == 760 || cod == 978
-			|| cod == 1008 || cod == 1065 || cod == 1066 || cod == 1067
-			|| cod == 1083 || cod == 1161 || cod == 1162) {
+	/*
+	 * Caso Geral
+	 */
+	if HasVal(a_COD_GERAL, cod) {
 
 		ControlSendRaw, , %arr%, ahk_pid %pwpid%
         Sleep, %shortSleep%
@@ -228,8 +229,11 @@ While row <= lastrow {
         Sleep, %shortSleep%
 
 		Sleep, 2000
-    
-	} Else If (cod == 478 || cod == 490 || cod == 1064) {
+
+	/*
+	 *	Exige Identificação do Contribuinte
+	 */
+	} Else If HasVal(a_COD_IDENT, cod) {
 		; add vazio
 		If (!add) {
 			xl.Range(_COL_RETURN . row).Value := "err: CPF/CNPJ"
@@ -439,9 +443,24 @@ ConfirmationScreen:
 GuiClose: 
 ExitApp
 
+
 /*
  *	Functions
  */
+
+HasVal(haystack, needle)
+{
+	for index, value in haystack {
+        if (value = needle)
+            return index
+	}
+
+    if !(IsObject(haystack)) {
+        throw Exception("Bad haystack!", -1, haystack)
+	}
+	    
+	return 0
+}
 
 /*
  *	void	desviar(string transaction)
