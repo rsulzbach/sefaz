@@ -39,6 +39,6 @@ a_COD_GERAL.Push(1162)
  */
 a_COD_IDENT := []
 a_COD_IDENT.Push(478)
-a_COD_IDENT.Push(490)
+;a_COD_IDENT.Push(490)
 a_COD_IDENT.Push(1064)
 
