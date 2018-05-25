@@ -42,5 +42,6 @@ a_COD_IDENT := []
 a_COD_IDENT.Push(305)
 a_COD_IDENT.Push(478)
 ;a_COD_IDENT.Push(490)
+a_COD_IDENT.Push(1047)
 a_COD_IDENT.Push(1064)
 
