@@ -23,6 +23,7 @@ a_COD_GERAL.Push(386)
 a_COD_GERAL.Push(451)
 a_COD_GERAL.Push(547)
 a_COD_GERAL.Push(640)
+a_COD_GERAL.Push(643)
 a_COD_GERAL.Push(681)
 a_COD_GERAL.Push(760)
 a_COD_GERAL.Push(978)
@@ -38,6 +39,7 @@ a_COD_GERAL.Push(1162)
  * Lista de Códigos que Exige Identificação do Contribuinte
  */
 a_COD_IDENT := []
+a_COD_IDENT.Push(305)
 a_COD_IDENT.Push(478)
 ;a_COD_IDENT.Push(490)
 a_COD_IDENT.Push(1064)
