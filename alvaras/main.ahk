@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.104
+VERS := 1.105
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
@@ -427,9 +427,10 @@ ConfirmationScreen:
 	ControlSendRaw, , %processo%, ahk_pid %pwpid%
     Sleep, %shortSleep%
     
+	; Now PROA number fills the field, moving the cursor to the next field
 	; Go to confirmation field
-	ControlSend, , {Tab}, ahk_pid %pwpid%
-    Sleep, %shortSleep%
+	;ControlSend, , {Tab}, ahk_pid %pwpid%
+    ;Sleep, %shortSleep%
     
 	; Fill in confirmation
 	ControlSendRaw, , %confirm_cmd%, ahk_pid %pwpid%
