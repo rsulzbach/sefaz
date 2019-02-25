@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.105
+VERS := 1.106
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
@@ -28,7 +28,7 @@ row := 0
  *	autoexecute
  */
  
-Gui, Add, Checkbox, Checked vcfg_onlyPoa, Corrigir apenas Poa (096 e 900)
+Gui, Add, Checkbox, vcfg_onlyPoa, Corrigir apenas Poa (096 e 900)
 
 Gui, Add, Checkbox, Checked vcfg_confirm, Efetivar correções
 
