@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.106
+VERS := 1.107
 TITLE := "Alvarás Automatizados - " . VERS
 shortSleep := 200
 row := 0
