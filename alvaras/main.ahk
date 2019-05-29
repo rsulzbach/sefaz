@@ -18,8 +18,8 @@
 /*
  *	globals
  */
-VERS := 1.106
-TITLE := "Alvarás Automatizados - " . VERS
+VERS := 1.107
+TITLE := "Auto Alvarás - v" . VERS
 shortSleep := 200
 row := 0
 
@@ -36,7 +36,7 @@ Gui, Add, Button, gExecute vbtnExecute, Executar
 
 Gui, Add, Button, gGuiClose vbtnClose, Fechar
 
-Gui, Show,, %TITLE% . Config
+Gui, Show, w250 h100 Center, %TITLE% . Config
 
 Return
 
@@ -115,8 +115,8 @@ Apropriacao do Alvara n. %alv%, expedido nos autos do processo  n. %pro%.
 IfMsgBox, No
     Return
 
-InputBox, matr, Alvarás Automatizados, Digite sua matrícula para login no SOE:
-InputBox, pwr, Alvarás Automatizados, Digite sua senha para login no SOE:, hide
+InputBox, matr, %TITLE%, Digite sua matrícula para login no SOE:
+InputBox, pwr, %TITLE%, Digite sua senha para login no SOE:, hide
 Sleep, %shortSleep%
 
 Run, C:\Program Files (x86)\pw3270\pw3270.exe, , , pwpid
