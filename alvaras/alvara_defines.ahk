@@ -5,6 +5,24 @@
 
 ;MsgBox, 0, , alvara_defines.ahk included
 
+/*
+ * Excel
+ */
+_EXCEL_COLOR_NOFILL := 0
+_EXCEL_COLOR_WHITE := 2
+_EXCEL_COLOR_RED := 3
+_EXCEL_COLOR_YELLOW := 6
+
+/*
+ * Meu Arquivo Excel: Diversos
+ */
+_FILLING_COLOR_SUCCESS := _EXCEL_COLOR_NOFILL
+_FILLING_COLOR_WARNING := _EXCEL_COLOR_YELLOW 
+_FILLING_COLOR_ERROR := _EXCEL_COLOR_RED
+
+/*
+ * Meu Arquivo Excel: Colunas
+ */
 _COL_CGCTE := "A"
 _COL_VAL := "J"
 _COL_ARR := "E"
@@ -13,6 +31,16 @@ _COL_RETURN := "K"
 _COL_COD := "L"
 _COL_PROC := "C"
 _COL_ADD := "M"
+
+_COL_FIRST := _COL_CGCTE
+_COL_LAST := _COL_ADD
+
+
+/*
+ * Meu Arquivo Excel: Células
+ */
+_CELL_PROCESSAO := "G2"
+
 
 /*
  * Lista de Códigos do Caso Geral
@@ -35,6 +63,7 @@ a_COD_GERAL.Push(1083)
 a_COD_GERAL.Push(1084)
 a_COD_GERAL.Push(1161)
 a_COD_GERAL.Push(1162)
+
 
 /*
  * Lista de Códigos que Exige Identificação do Contribuinte
