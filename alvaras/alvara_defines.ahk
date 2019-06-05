@@ -53,7 +53,7 @@ a_COD_GERAL.Push(547)
 ;a_COD_GERAL.Push(640)	; PROCON  
 a_COD_GERAL.Push(643)
 a_COD_GERAL.Push(681)
-a_COD_GERAL.Push(760)
+a_COD_GERAL.Push(942)
 a_COD_GERAL.Push(978)
 a_COD_GERAL.Push(1008)
 a_COD_GERAL.Push(1065)
@@ -63,6 +63,7 @@ a_COD_GERAL.Push(1083)
 a_COD_GERAL.Push(1084)
 a_COD_GERAL.Push(1161)
 a_COD_GERAL.Push(1162)
+a_COD_GERAL.Push(1199)
 
 
 /*
@@ -72,7 +73,8 @@ a_COD_IDENT := []
 a_COD_IDENT.Push(305)
 a_COD_IDENT.Push(319)
 a_COD_IDENT.Push(478)
-;a_COD_IDENT.Push(490)
+;a_COD_IDENT.Push(490)	; manual - necessário também cod município
+a_COD_IDENT.Push(760)
 a_COD_IDENT.Push(1047)
 a_COD_IDENT.Push(1064)
 a_COD_IDENT.Push(1074)
