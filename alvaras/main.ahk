@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.107
+VERS := 1.110
 TITLE := "Auto Alvarás - v" . VERS
 shortSleep := 200
 row := 0
@@ -75,9 +75,9 @@ MsgBox, 0, %TITLE%,
 Para garantir o correto funcionamento do script,
 Verifique e Confirme as seguintes informações.
 )
-processo := xl.Range("G2").Text
+processao := xl.Range(_CELL_PROCESSAO).Text
 
-MsgBox, 4, %TITLE%, O número do Processo Administrativo é %processo%
+MsgBox, 4, %TITLE%, O número do Processo Administrativo é %processao%
 IfMsgBox, No
     Return
 
@@ -98,7 +98,7 @@ arr := xl.Range(_COL_ARR . row).Text
 val := xl.Range(_COL_VAL . row).Text
 cod := xl.Range(_COL_COD . row).Text
 alv := SubStr(xl.Range(_COL_ALV . row).Text, -10)
-pro := SubStr("000" . xl.Range(_COL_PROC . row).Text, -13)
+pro := "xxx" . SubStr(xl.Range(_COL_PROC . row).Text, -10)
 
 MsgBox, 4, %TITLE%, 
 (LTrim
@@ -172,7 +172,7 @@ While row <= lastrow {
 	val := xl.Range(_COL_VAL . row).Text
 	cod := xl.Range(_COL_COD . row).Text
 	alv := SubStr(xl.Range(_COL_ALV . row).Text, -10)
-	pro := SubStr("000" . xl.Range(_COL_PROC . row).Text, -13)
+	pro := "xxx" . SubStr(xl.Range(_COL_PROC . row).Text, -10)
 	add := xl.Range(_COL_ADD . row).Text
 
     Sleep, %shortSleep%
@@ -183,7 +183,7 @@ While row <= lastrow {
 		; Flags invalid mun
 		xl.Range(_COL_RETURN . row).Value := "IE: " . mun . "/xxxxxxx"
 		; Paints row in yellow
-		xl.Range(row . ":" . row).Interior.ColorIndex := 6
+		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_WARNING
         Sleep, %shortSleep%
 
 		goto NextRow
@@ -225,7 +225,8 @@ While row <= lastrow {
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
         Sleep, %shortSleep%
 
-		xl.Range(row . ":" . row).Interior.ColorIndex := 2
+		; Changes row cells Filling to NoFill
+		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_SUCCESS 
         Sleep, %shortSleep%
 
 		Sleep, 2000
@@ -239,7 +240,7 @@ While row <= lastrow {
 			xl.Range(_COL_RETURN . row).Value := "err: CPF/CNPJ"
             Sleep, %shortSleep%
         
-			xl.Range(row . ":" . row).Interior.ColorIndex := 6
+			xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_WARNING
             Sleep, %shortSleep%
 
 			goto NextRow
@@ -282,7 +283,8 @@ While row <= lastrow {
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
         Sleep, %shortSleep%
 
-		xl.Range(row . ":" . row).Interior.ColorIndex := 2
+		; Changes row cells Filling to NoFill
+		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_SUCCESS
         Sleep, %shortSleep%
 
 		Sleep, 2000
@@ -293,7 +295,7 @@ While row <= lastrow {
 			xl.Range(_COL_RETURN . row).Value := "err: DAT"
             Sleep, %shortSleep%
         
-			xl.Range(row . ":" . row).Interior.ColorIndex := 6
+			xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_WARNING
             Sleep, %shortSleep%
 
 			goto NextRow
@@ -349,7 +351,8 @@ While row <= lastrow {
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
         Sleep, %shortSleep%
 	
-		xl.Range(row . ":" . row).Interior.ColorIndex := 2
+		; Changes row cells Filling to NoFill
+		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_SUCCESS
         Sleep, %shortSleep%
 
 		Sleep, 2000
@@ -362,7 +365,7 @@ While row <= lastrow {
         xl.Range(_COL_RETURN . row).Value := "err: INVÁLIDO(" . cod . ")"
         Sleep, %shortSleep%
 
-		xl.Range(row . ":" . row).Interior.ColorIndex := 3
+		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_ERROR
         Sleep, %shortSleep%
 
     }
@@ -424,7 +427,7 @@ ConfirmationScreen:
     Sleep, %shortSleep%
     
 	; Fill in with Processão number
-	ControlSendRaw, , %processo%, ahk_pid %pwpid%
+	ControlSendRaw, , %processao%, ahk_pid %pwpid%
     Sleep, %shortSleep%
     
 	; Now PROA number fills the field, moving the cursor to the next field
