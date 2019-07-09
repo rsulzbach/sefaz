@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.111
+VERS := 1.112
 TITLE := "Auto Alvarás - v" . VERS
 shortSleep := 200
 row := 0
@@ -62,6 +62,9 @@ Sleep, %shortSleep%
 
 FileSelectFile, pathxl, , , Selecione Arquivo com Alvarás Automatizados, *.xlsx
 Sleep, %shortSleep%
+
+if (pathxl == "")
+	Return
 
 If !IsObject(xl)
 	xl := ComObjCreate("Excel.Application")
@@ -122,13 +125,13 @@ Sleep, %shortSleep%
 Run, C:\Program Files (x86)\pw3270\pw3270.exe, , , pwpid
 WinWait, ahk_pid %pwpid%
 Sleep, 333
-Sleep, 1000
+Sleep, 4000
 
 ControlSendRaw, , ims, ahk_pid %pwpid%
 Sleep, %shortSleep%
 
 ControlSend, , {Enter}, ahk_pid %pwpid%
-Sleep, 1000
+Sleep, 2000
 
 ControlSend, , {Enter}, ahk_pid %pwpid%
 Sleep, 2000
