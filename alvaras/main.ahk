@@ -122,7 +122,26 @@ InputBox, matr, %TITLE%, Digite sua matrícula para login no SOE:
 InputBox, pwr, %TITLE%, Digite sua senha para login no SOE:, hide
 Sleep, %shortSleep%
 
-Run, C:\Program Files (x86)\pw3270\pw3270.exe, , , pwpid
+if FileExist("C:\Program Files (x86)\pw3270\pw3270.exe")
+	MsgBox, Program Files (x86)
+else if FileExist("C:\Program Files\pw3270\pw3270.exe")
+	MsgBox, Program Files
+else if FileExist(A_DesktopCommon "\pw3270")
+	MsgBox, DesktopCommon existe
+else
+	MsgBox, pw3270 não encontrado
+
+;FileExist("C:\Program Files (x86)\pw3270\pw3270.exe") ? MsgBox("x86 existe")
+;		: FileExist("C:\Program Files\pw3270\pw3270.exe") ? MsgBox("x64 existe")
+;		: FileExist(A_DesktopCommon "\pw3270") ? MsgBox("DesktopCommon existe")
+
+
+FileSelectFile, pw3270Path, 
+
+;Run, C:\Program Files\pw3270\pw3270.exe, , , pwpid
+;pw3270Path = %A_DesktopCommon%\pw3270
+
+Run, %pw3270Path%, , , pwpid
 WinWait, ahk_pid %pwpid%
 Sleep, 333
 Sleep, 4000
