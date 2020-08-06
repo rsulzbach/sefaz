@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.113
+VERS := 1.120
 TITLE := "Auto Alvarás - v" . VERS
 shortSleep := 200
 row := 0
@@ -166,10 +166,10 @@ IfMsgBox, No
     Return
 
 desviar("arr-alt-gui")
-Sleep, 2000
 
 While row <= lastrow {
 
+	; We start colecting all info from new row
 	mun := SubStr(xl.Range(_COL_CGCTE . row).Text, 1, 3)
 	arr := xl.Range(_COL_ARR . row).Text
 	val := xl.Range(_COL_VAL . row).Text
@@ -177,14 +177,14 @@ While row <= lastrow {
 	alv := SubStr(xl.Range(_COL_ALV . row).Text, -10)
 	pro := "xxx" . SubStr(xl.Range(_COL_PROC . row).Text, -10)
 	add := xl.Range(_COL_ADD . row).Text
-
-    Sleep, %shortSleep%
+	Sleep, %shortSleep%
 
 	if cfg_onlyPoa && !(mun == 096 || mun == 900) {
 		;MsgBox, 0, , Mun(%mun%) diferente de 096 ou 900.
 
 		; Flags invalid mun
 		xl.Range(_COL_RETURN . row).Value := "IE: " . mun . "/xxxxxxx"
+	    Sleep, %shortSleep%
 		; Paints row in yellow
 		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_WARNING
         Sleep, %shortSleep%
@@ -197,186 +197,85 @@ While row <= lastrow {
 	 */
 	if HasVal(a_COD_GERAL, cod) {
 
-		ControlSendRaw, , %arr%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, 5000
-        
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		
-        ; MsgBox, 0, , Vai para posição do código
-        Loop, 11 {
-            ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-        }
-        
-		ControlSend, , {End}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSendRaw, , %cod%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {F5}, ahk_pid %pwpid%
-        Sleep, 5000
-       
-		gosub ConfirmationScreen
-           
+		gosub ChangeGA		
+
 		; Now we update excel with date
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
-        Sleep, %shortSleep%
-
+	    Sleep, %shortSleep%
 		; Changes row cells Filling to NoFill
-		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_SUCCESS 
-        Sleep, %shortSleep%
-
-		Sleep, 2000
+		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_SUCCESS
+    	Sleep, %shortSleep%
 
 	/*
 	 *	Exige Identificação do Contribuinte
 	 */
 	} Else If HasVal(a_COD_IDENT, cod) {
-		; add vazio
+		; empty add field
+		; can't change this GA without ID
 		If (!add) {
+			; update excel with warning
 			xl.Range(_COL_RETURN . row).Value := "err: CPF/CNPJ"
             Sleep, %shortSleep%
-        
 			xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_WARNING
             Sleep, %shortSleep%
 
 			goto NextRow
 		}
         
-		ControlSendRaw, , %arr%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, 5000
-        
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {End}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSendRaw, , %add%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-        ; MsgBox, 0, , Vai para posição do código
-        Sleep, %shortSleep%
-        Loop, 11 {
-            ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-        }
-        
-		ControlSend, , {End}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSendRaw, , %cod%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {F5}, ahk_pid %pwpid%
-        Sleep, 5000
-
-		gosub ConfirmationScreen
+		gosub ChangeGA
         
 		; Now we update excel with date
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
-        Sleep, %shortSleep%
-
+	    Sleep, %shortSleep%
 		; Changes row cells Filling to NoFill
 		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_SUCCESS
-        Sleep, %shortSleep%
+    	Sleep, %shortSleep%
 
-		Sleep, 2000
-
+	/*
+	 *	COD 761
+	 *	Related do DATs - uses another transaction
+	 */
 	} Else If (cod == 761) {
-		; add vazio
+		; empty add field
+		; can't change this GA without DAT
 		If (!add) {
+			; update excel with warning
 			xl.Range(_COL_RETURN . row).Value := "err: DAT"
             Sleep, %shortSleep%
-        
 			xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_WARNING
             Sleep, %shortSleep%
 
 			goto NextRow
 		}
- 
-		desviar("arr-alt-alv")
-        Sleep, 2000
 
-		ControlSendRaw, , %arr%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, 2000
+		gosub ChangeGA761
 
-		ControlSendRaw, , x, ahk_pid %pwpid%
-		Sleep, %shortSleep%
-
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, 5000
-
-		ControlSend, , {Enter}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-	    ; MsgBox, 0, , Vai para posição da Referencia
-		ControlSend, , {Tab}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-		
-		ControlSend, , {End}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSendRaw, , %add%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-        ; MsgBox, 0, , Vai para posição do código
-        Sleep, %shortSleep%
-        Loop, 10 {
-            ControlSend, , {Tab}, ahk_pid %pwpid%
-            Sleep, %shortSleep%
-        }
-        
-		ControlSend, , {End}, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSendRaw, , %cod%, ahk_pid %pwpid%
-        Sleep, %shortSleep%
-        
-		ControlSend, , {F5}, ahk_pid %pwpid%
-        Sleep, 5000
-
-		gosub ConfirmationScreen
-        
 		; Now we update excel with date
 		xl.Range(_COL_RETURN . row).Value := A_DD . "/" . A_MM . "/" . A_YYYY
-        Sleep, %shortSleep%
-	
+	    Sleep, %shortSleep%
 		; Changes row cells Filling to NoFill
 		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_SUCCESS
-        Sleep, %shortSleep%
-
-		Sleep, 2000
-		; Go back to default transaction
-		desviar("arr-alt-gui")
-        Sleep, 2000
-
-    } Else {
-
-        xl.Range(_COL_RETURN . row).Value := "err: INVÁLIDO(" . cod . ")"
-        Sleep, %shortSleep%
-
+    	Sleep, %shortSleep%
+ 
+    /*
+	 *	An Unknown Cod
+	 */
+	} Else {
+		; don't know what to do
+		; update excel with error
+		xl.Range(_COL_RETURN . row).Value := "err: INVÁLIDO(" . cod . ")"
+		Sleep, %shortSleep%
 		xl.Range(_COL_FIRST . row . ":" . _COL_LAST . row).Interior.ColorIndex := _FILLING_COLOR_ERROR
-        Sleep, %shortSleep%
+		Sleep, %shortSleep%
 
     }
 
 NextRow:	 
-    row += 1
-    ; MsgBox, 0, , Próxima linha a executar: %row%
-    Sleep, %shortSleep%
+	Sleep, 1000
+
+	row += 1
+	; MsgBox, 0, , Próxima linha a executar: %row%
+	Sleep, %shortSleep%
 }
 
 MsgBox, 0, %TITLE%, Encerrando sessão SOE.
@@ -406,12 +305,120 @@ Exitapp
 return
 
 /*
- *	Subrotines
+ *
+ *	Subroutines
+ *	
  */
 
+/*
+ */
+ChangeGA:
+{
+	;msgbox, 0, , ChangeGA Subroutine
+
+	; entering GA
+	ControlSendRaw, , %arr%, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+
+	; sometimes it takes a long time to enter the GA
+	ControlSend, , {Enter}, ahk_pid %pwpid%
+	Sleep, 5000
+
+	ControlSend, , {Enter}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+    
+	; We start at ID field
+	; Changing ID Field if we have new info
+	If (add) {
+		ControlSend, , {End}, ahk_pid %pwpid%
+		Sleep, %shortSleep%
+		ControlSendRaw, , %add%, ahk_pid %pwpid%
+		Sleep, %shortSleep%
+	}
+    
+    ; MsgBox, 0, , Vai para posição do código
+	Loop, 11 {
+		ControlSend, , {Tab}, ahk_pid %pwpid%
+		Sleep, %shortSleep%
+    }
+	
+	; Changing Cod Field
+	ControlSend, , {End}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	ControlSendRaw, , %cod%, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	Sleep, 1000
+	
+	; Done changing things. Update
+	ControlSend, , {F5}, ahk_pid %pwpid%
+	Sleep, 4000
+	
+	gosub ConfirmationScreen
+
+} return
+
+/*
+ */
+ChangeGA761:
+{
+	;msgbox, 0, , ChangeGA761 Subroutine
+
+	desviar("arr-alt-alv")
+
+	ControlSendRaw, , %arr%, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	    
+	ControlSend, , {Enter}, ahk_pid %pwpid%
+	Sleep, 2000
+	
+	ControlSendRaw, , x, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSend, , {Enter}, ahk_pid %pwpid%
+	Sleep, 5000
+	
+	ControlSend, , {Enter}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	    
+	; MsgBox, 0, , Vai para posição da Referencia
+	ControlSend, , {Tab}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSend, , {End}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSendRaw, , %add%, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	; MsgBox, 0, , Vai para posição do código
+	Sleep, %shortSleep%
+	Loop, 10 {
+		ControlSend, , {Tab}, ahk_pid %pwpid%
+		Sleep, %shortSleep%
+    }
+	    
+	ControlSend, , {End}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	
+	ControlSendRaw, , %cod%, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	Sleep, 1000
+	
+	ControlSend, , {F5}, ahk_pid %pwpid%
+	Sleep, 4000
+	
+	gosub ConfirmationScreen
+	
+	; Go back to default transaction
+	desviar("arr-alt-gui")
+
+} return
+
+/*
+ */
 ConfirmationScreen:
 {
-	;msgbox, 0, , ConfirmationScreen Subrotine
+	;msgbox, 0, , ConfirmationScreen Subroutine
 	
 	; First we clean every line
 	Loop, 4 {
@@ -443,16 +450,20 @@ ConfirmationScreen:
     Sleep, 1000
     
 	ControlSend, , {Enter}, ahk_pid %pwpid%
-    Sleep, %shortSleep%
+    Sleep, 2000
 
 } return
 
+/*
+ */
 GuiClose: 
 ExitApp
 
 
 /*
+ *
  *	Functions
+ *
  */
 
 HasVal(haystack, needle)
@@ -507,6 +518,8 @@ desviar(transaction)
 	
 	ControlSend, , {Enter}, ahk_pid %pwpid%
 	Sleep, %shortSleep%
+
+	Sleep, 2000
 
 	return
 }
