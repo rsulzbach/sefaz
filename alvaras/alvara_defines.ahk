@@ -49,10 +49,12 @@ a_COD_GERAL := []
 a_COD_GERAL.Push(304)
 a_COD_GERAL.Push(386)
 a_COD_GERAL.Push(451)
+a_COD_GERAL.Push(479)
 a_COD_GERAL.Push(547)
 ;a_COD_GERAL.Push(640)	; PROCON  
 a_COD_GERAL.Push(643)
 a_COD_GERAL.Push(681)
+a_COD_GERAL.Push(760)
 a_COD_GERAL.Push(762)
 a_COD_GERAL.Push(942)
 a_COD_GERAL.Push(978)
@@ -69,9 +71,9 @@ a_COD_GERAL.Push(1199)
 a_COD_IDENT := []
 a_COD_IDENT.Push(305)
 a_COD_IDENT.Push(319)
+a_COD_IDENT.Push(378)
 a_COD_IDENT.Push(478)
 ;a_COD_IDENT.Push(490)	; manual - necessário também cod município
-a_COD_IDENT.Push(760)
 a_COD_IDENT.Push(1047)
 a_COD_IDENT.Push(1064)
 a_COD_IDENT.Push(1074)
@@ -79,4 +81,5 @@ a_COD_IDENT.Push(1083)	; Extinta CEERGS - BADESUL
 a_COD_IDENT.Push(1084)	; Extinta CEERGS - BADESUL 
 a_COD_IDENT.Push(1161)	; Extinta CEERGS - BADESUL 
 a_COD_IDENT.Push(1162)	; Extinta CEERGS - BADESUL
+a_COD_IDENT.Push(1587)
 
