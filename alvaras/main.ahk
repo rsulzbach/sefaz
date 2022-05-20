@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.121
+VERS := 1.121b
 TITLE := "Auto Alvarás - v" . VERS
 shortSleep := 200
 row := 0
@@ -169,7 +169,7 @@ desviar("arr-alt-gui")
 
 While row <= lastrow {
 
-	; We start colecting all info from new row
+	; We start collecting all info from new row
 	mun := SubStr(xl.Range(_COL_CGCTE . row).Text, 1, 3)
 	arr := xl.Range(_COL_ARR . row).Text
 	val := xl.Range(_COL_VAL . row).Text
@@ -431,7 +431,13 @@ ConfirmationScreen:
 	; Fill in observation
 	ControlSendRaw, , apropriacao do alvara n. %alv%`, expedido nos autos do processo  n. %pro%., ahk_pid %pwpid%
     Sleep, %shortSleep%
-    
+	
+	; Complement observation
+	ControlSend, , {Space}, ahk_pid %pwpid%
+	Sleep, %shortSleep%
+	ControlSendRaw, , E-mail complementar PDPE em 18-04-2022 AJ Claudio, ahk_pid %pwpid%
+    Sleep, %shortSleep%
+
 	; Go to Processo field
 	ControlSend, , {Tab}, ahk_pid %pwpid%
     Sleep, %shortSleep%
