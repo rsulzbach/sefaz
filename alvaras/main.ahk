@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.122
+VERS := 1.123
 TITLE := "Auto Alvarás - v" . VERS
 shortSleep := 200
 row := 0
@@ -122,7 +122,7 @@ InputBox, matr, %TITLE%, Digite sua matrícula para login no SOE:
 InputBox, pwr, %TITLE%, Digite sua senha para login no SOE:, hide
 Sleep, %shortSleep%
 
-Run, C:\Program Files (x86)\pw3270\pw3270.exe, , , pwpid
+Run, C:\Program Files\pw3270\pw3270.exe, , , pwpid
 WinWait, ahk_pid %pwpid%
 Sleep, 333
 Sleep, 4000

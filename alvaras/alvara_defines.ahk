@@ -77,6 +77,7 @@ a_COD_IDENT.Push(478)
 ;a_COD_IDENT.Push(490)	; manual - necessário também cod município
 a_COD_IDENT.Push(1047)
 a_COD_IDENT.Push(1064)
+a_COD_IDENT.Push(1072)
 a_COD_IDENT.Push(1074)
 a_COD_IDENT.Push(1083)	; Extinta CEERGS - BADESUL 
 a_COD_IDENT.Push(1084)	; Extinta CEERGS - BADESUL 
