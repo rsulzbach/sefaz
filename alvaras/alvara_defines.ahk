@@ -24,13 +24,13 @@ _FILLING_COLOR_ERROR := _EXCEL_COLOR_RED
  * Meu Arquivo Excel: Colunas
  */
 _COL_CGCTE := "A"
-_COL_VAL := "J"
-_COL_ARR := "E"
-_COL_ALV := "G"
-_COL_RETURN := "K"
-_COL_COD := "L"
 _COL_PROC := "C"
-_COL_ADD := "M"
+_COL_ARR := "D"
+_COL_ALV := "F"
+_COL_VAL := "G"
+_COL_RETURN := "H"
+_COL_COD := "I"
+_COL_ADD := "J"
 
 _COL_FIRST := _COL_CGCTE
 _COL_LAST := _COL_ADD
@@ -39,7 +39,7 @@ _COL_LAST := _COL_ADD
 /*
  * Meu Arquivo Excel: Células
  */
-_CELL_PROCESSAO := "G2"
+_CELL_PROCESSAO := "F2"
 
 
 /*

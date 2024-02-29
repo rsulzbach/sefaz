@@ -18,7 +18,7 @@
 /*
  *	globals
  */
-VERS := 1.124
+VERS := 1.200
 TITLE := "Auto Alvarás - v" . VERS
 shortSleep := 200
 row := 0
