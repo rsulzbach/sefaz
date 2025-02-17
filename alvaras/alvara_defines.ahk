@@ -74,7 +74,7 @@ a_COD_IDENT.Push(305)
 a_COD_IDENT.Push(319)
 a_COD_IDENT.Push(378)
 a_COD_IDENT.Push(478)
-;a_COD_IDENT.Push(490)	; manual - necessário também cod município
+a_COD_IDENT.Push(550)	; MULTA DE FISCALIZACAO DO MEIO-AMBIENTE	(17/02/2025)
 a_COD_IDENT.Push(1047)
 a_COD_IDENT.Push(1064)
 a_COD_IDENT.Push(1072)
