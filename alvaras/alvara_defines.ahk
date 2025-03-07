@@ -70,6 +70,7 @@ a_COD_GERAL.Push(1199)
  * Lista de Códigos que Exige Identificação do Contribuinte
  */
 a_COD_IDENT := []
+a_COD_IDENT.Push(265)	; MULTAS DA RECEITA NAO TRIBUTARIA - FEGEP	(07/03/2025)
 a_COD_IDENT.Push(305)
 a_COD_IDENT.Push(319)
 a_COD_IDENT.Push(378)
